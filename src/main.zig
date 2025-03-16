@@ -35,3 +35,26 @@ test "if statement expression" {
     x += if (a) 1 else 2;
     try std.testing.expect(x == 1);
 }
+
+test "for" {
+    //character literals are equivalent to integer literals
+    const string = [_]u8{ 'a', 'b' };
+
+    for (string, 0..) |character, index| {
+        if (index == 0) {
+            try std.testing.expect(character == 'a');
+        } else {
+            try std.testing.expect(character == 'b');
+        }
+    }
+
+    for (string) |character| {
+        try std.testing.expect(character == 'a');
+        break;
+    }
+
+    for (string, 0..) |_, index| {
+        try std.testing.expect(string[index] == 'a');
+        break;
+    }
+}
