@@ -1,6 +1,11 @@
 const std = @import("std");
 const lib = @import("zigit_lib");
 
+fn fibonacci(n: u16) u16 {
+    if (n == 0 or n == 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
 pub fn main() void {
     std.debug.print("Hello, {s}!\n", .{"World"});
 }
@@ -67,4 +72,9 @@ test "for loop" {
         try std.testing.expect(string[index] == 'a');
         break;
     }
+}
+
+test "function recursion" {
+    const x = fibonacci(10);
+    try std.testing.expect(x == 55);
 }
