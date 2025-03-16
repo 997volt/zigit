@@ -6,16 +6,26 @@ pub fn main() void {
 }
 
 test "use other module" {
+    try std.testing.expectEqual(@as(i32, 150), lib.add(100, 50));
+}
+
+test "value assignment" {
     const int_const = @as(i32, 50);
-    var int_var = @as(i32, 45);
+    var int_var: i32 = 50;
     int_var = int_var + int_const;
+    try std.testing.expectEqual(100, int_var);
+}
 
-    const array = [_]u8{ 'h', 'e', 'l', 'l', 'o' };
-    const len = array.len; // 5
+test "type cast" {
+    const len: u16 = 100;
     const int_len = @as(i32, @intCast(len));
-    int_var = int_var + int_len;
+    try std.testing.expectEqual(@as(i32, 100), int_len);
+}
 
-    try std.testing.expectEqual(@as(i32, 150), lib.add(int_const, int_var));
+test "array" {
+    const array = [_]u8{ 't', 'e', 's', 't' };
+    const len = array.len;
+    try std.testing.expectEqual(4, len);
 }
 
 test "if statement" {
@@ -36,7 +46,7 @@ test "if statement expression" {
     try std.testing.expect(x == 1);
 }
 
-test "for" {
+test "for loop" {
     //character literals are equivalent to integer literals
     const string = [_]u8{ 'a', 'b' };
 
