@@ -78,3 +78,26 @@ test "function recursion" {
     const x = fibonacci(10);
     try std.testing.expect(x == 55);
 }
+
+test "defer" {
+    // It is useful to ensure that resources are cleaned up when they are no longer needed.
+    // Instead of needing to remember to manually free up the resource, you can add a defer statement right next to the statement that allocates the resource.
+    var x: i16 = 5;
+    {
+        defer x += 2;
+        try std.testing.expect(x == 5);
+    }
+    try std.testing.expect(x == 7);
+}
+
+test "coerce error from a subset to a superset" {
+    const FileOpenError = error{
+        AccessDenied,
+        OutOfMemory,
+        FileNotFound,
+    };
+    const AllocationError = error{OutOfMemory};
+
+    const err: FileOpenError = AllocationError.OutOfMemory;
+    try std.testing.expect(err == FileOpenError.OutOfMemory);
+}
