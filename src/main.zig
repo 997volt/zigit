@@ -101,3 +101,12 @@ test "coerce error from a subset to a superset" {
     const err: FileOpenError = AllocationError.OutOfMemory;
     try std.testing.expect(err == FileOpenError.OutOfMemory);
 }
+
+test "error union" {
+    const AllocationError = error{OutOfMemory};
+    const maybe_error: AllocationError!u16 = 10;
+    const no_error = maybe_error catch 0;
+
+    try std.testing.expect(@TypeOf(no_error) == u16);
+    try std.testing.expect(no_error == 10);
+}
