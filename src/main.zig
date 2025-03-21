@@ -1,5 +1,7 @@
 const std = @import("std");
 const lib = @import("zigit_lib");
+const expect = std.testing.expect;
+const expectEqual = std.testing.expectEqual;
 
 fn fibonacci(n: u16) u16 {
     if (n == 0 or n == 1) return n;
@@ -11,26 +13,26 @@ pub fn main() void {
 }
 
 test "use other module" {
-    try std.testing.expectEqual(@as(i32, 150), lib.add(100, 50));
+    try expectEqual(@as(i32, 150), lib.add(100, 50));
 }
 
 test "value assignment" {
     const int_const = @as(i32, 50);
     var int_var: i32 = 50;
     int_var = int_var + int_const;
-    try std.testing.expectEqual(100, int_var);
+    try expectEqual(100, int_var);
 }
 
 test "type cast" {
     const len: u16 = 100;
     const int_len = @as(i32, @intCast(len));
-    try std.testing.expectEqual(@as(i32, 100), int_len);
+    try expectEqual(@as(i32, 100), int_len);
 }
 
 test "array" {
     const array = [_]u8{ 't', 'e', 's', 't' };
     const len = array.len;
-    try std.testing.expectEqual(4, len);
+    try expectEqual(4, len);
 }
 
 test "if statement" {
@@ -41,14 +43,14 @@ test "if statement" {
     } else {
         x += 2;
     }
-    try std.testing.expect(x == 1);
+    try expect(x == 1);
 }
 
 test "if statement expression" {
     const a = true;
     var x: u16 = 0;
     x += if (a) 1 else 2;
-    try std.testing.expect(x == 1);
+    try expect(x == 1);
 }
 
 test "for loop" {
@@ -57,26 +59,26 @@ test "for loop" {
 
     for (string, 0..) |character, index| {
         if (index == 0) {
-            try std.testing.expect(character == 'a');
+            try expect(character == 'a');
         } else {
-            try std.testing.expect(character == 'b');
+            try expect(character == 'b');
         }
     }
 
     for (string) |character| {
-        try std.testing.expect(character == 'a');
+        try expect(character == 'a');
         break;
     }
 
     for (string, 0..) |_, index| {
-        try std.testing.expect(string[index] == 'a');
+        try expect(string[index] == 'a');
         break;
     }
 }
 
 test "function recursion" {
     const x = fibonacci(10);
-    try std.testing.expect(x == 55);
+    try expect(x == 55);
 }
 
 test "defer" {
@@ -85,9 +87,9 @@ test "defer" {
     var x: i16 = 5;
     {
         defer x += 2;
-        try std.testing.expect(x == 5);
+        try expect(x == 5);
     }
-    try std.testing.expect(x == 7);
+    try expect(x == 7);
 }
 
 test "coerce error from a subset to a superset" {
@@ -99,7 +101,7 @@ test "coerce error from a subset to a superset" {
     const AllocationError = error{OutOfMemory};
 
     const err: FileOpenError = AllocationError.OutOfMemory;
-    try std.testing.expect(err == FileOpenError.OutOfMemory);
+    try expect(err == FileOpenError.OutOfMemory);
 }
 
 test "error union" {
@@ -107,6 +109,6 @@ test "error union" {
     const maybe_error: AllocationError!u16 = 10;
     const no_error = maybe_error catch 0;
 
-    try std.testing.expect(@TypeOf(no_error) == u16);
-    try std.testing.expect(no_error == 10);
+    try expect(@TypeOf(no_error) == u16);
+    try expect(no_error == 10);
 }
