@@ -119,3 +119,17 @@ test "enum ordinal value" {
     try expect(@intFromEnum(Value.one) == 1);
     try expect(@intFromEnum(Value.two) == 2);
 }
+
+const Suit = enum {
+    clubs,
+    spades,
+    diamonds,
+    hearts,
+    pub fn isClubs(self: Suit) bool {
+        return self == Suit.clubs;
+    }
+};
+
+test "enum method" {
+    try expect(Suit.spades.isClubs() == Suit.isClubs(.spades));
+}
