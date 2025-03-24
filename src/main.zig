@@ -112,3 +112,10 @@ test "error union" {
     try expect(@TypeOf(no_error) == u16);
     try expect(no_error == 10);
 }
+
+test "enum ordinal value" {
+    const Value = enum(u2) { zero, one, two };
+    try expect(@intFromEnum(Value.zero) == 0);
+    try expect(@intFromEnum(Value.one) == 1);
+    try expect(@intFromEnum(Value.two) == 2);
+}
